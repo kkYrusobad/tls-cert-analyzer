@@ -5,22 +5,26 @@
 //!
 //! # Examples
 //!
-//! ```no_run
-//! use tls_cert_analyzer::{CertificateFetcher, CertificateAnalyzer};
+//! ```
+//! use tls_cert_analyzer::{CertificateAnalyzer, Severity};
 //!
-//! #[tokio::main]
-//! async fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!     // Fetch certificate from a host
-//!     let fetcher = CertificateFetcher::new();
-//!     let chain = fetcher.fetch("google.com", 443).await?;
-//!     
-//!     // Analyze the certificate
-//!     let analyzer = CertificateAnalyzer::new();
-//!     let results = analyzer.analyze(&chain)?;
-//!     
-//!     println!("Analysis results: {:?}", results);
-//!     Ok(())
-//! }
+//! // Create an analyzer
+//! let analyzer = CertificateAnalyzer::new();
+//!
+//! // Note: Full usage requires implementing TLS fetching and X.509 parsing
+//! // This is demonstrated in GETTING_STARTED.md
+//! ```
+//!
+//! ```no_run
+//! # use tls_cert_analyzer::{CertificateFetcher, CertificateAnalyzer};
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! // Full example (requires implementation):
+//! let fetcher = CertificateFetcher::new();
+//! let _chain = fetcher.fetch("google.com", 443).await?;
+//! // After implementation, you would parse and analyze the chain here
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! # Architecture
