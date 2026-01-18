@@ -63,7 +63,7 @@ This project is designed to demonstrate:
 ### Build from Source
 
 ```bash
-git clone https://github.com/yourusername/tls-cert-analyzer.git
+git clone https://github.com/kkyrusobad/tls-cert-analyzer.git
 cd tls-cert-analyzer
 cargo build --release
 ```
@@ -279,8 +279,8 @@ at your option.
 
 For questions, suggestions, or collaboration:
 
-- GitHub Issues: [Project Issues](https://github.com/yourusername/tls-cert-analyzer/issues)
-- Email: <your.email@example.com>
+- GitHub Issues: [Project Issues](https://github.com/kkyrusobad/tls-cert-analyzer/issues)
+- Email: <prateek.yadav@edu.rptu.de>
 
 ---
 

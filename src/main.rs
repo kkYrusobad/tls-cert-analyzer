@@ -9,7 +9,7 @@ use tracing_subscriber::EnvFilter;
 
 #[derive(Parser)]
 #[command(name = "tls-cert-analyzer")]
-#[command(author = "Your Name")]
+#[command(author = "Prateek Yadav")]
 #[command(version = tls_cert_analyzer::VERSION)]
 #[command(about = "Graduate-level TLS certificate security analyzer", long_about = None)]
 struct Cli {

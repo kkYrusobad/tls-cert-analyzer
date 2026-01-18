@@ -2,10 +2,10 @@
 name = "tls-cert-analyzer"
 version = "0.1.0"
 edition = "2021"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Prateek Yadav <prateek.yadav@edu.rptu.de>"]
 license = "MIT OR Apache-2.0"
 description = "Graduate-level TLS certificate analyzer with security auditing capabilities"
-repository = "https://github.com/yourusername/tls-cert-analyzer"
+repository = "https://github.com/kkyrusobad/tls-cert-analyzer"
 readme = "README.md"
 keywords = ["tls", "x509", "certificate", "security", "cryptography"]
 categories = ["command-line-utilities", "cryptography", "network-programming"]
