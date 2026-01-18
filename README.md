@@ -284,4 +284,4 @@ For questions, suggestions, or collaboration:
 
 ---
 
-**Built with ❤️ for graduate-level cybersecurity education and research**
+**Built with ❤️**
