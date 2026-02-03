@@ -81,6 +81,7 @@ impl AnalysisResult {
 }
 
 /// Main certificate analyzer
+#[derive(Clone)]
 pub struct CertificateAnalyzer {
     expiry: ExpiryAnalyzer,
     crypto: CryptoAnalyzer,

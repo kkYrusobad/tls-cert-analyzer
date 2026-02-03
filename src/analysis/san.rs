@@ -5,6 +5,7 @@ use crate::cert::ParsedCertificate;
 use crate::error::Result;
 
 /// Analyzer for SAN-related issues
+#[derive(Clone)]
 pub struct SanAnalyzer;
 
 impl SanAnalyzer {

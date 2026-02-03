@@ -36,13 +36,16 @@ This project is designed to demonstrate:
 
 ### Core Functionality
 
-- ✅ **TLS Certificate Fetching**: Connect to hosts and retrieve certificates
-- ✅ **X.509 Parsing**: Full ASN.1 and X.509 structure parsing
-- ✅ **Chain Validation**: Build and validate certificate chains
-- ✅ **Expiry Detection**: Identify expired or soon-to-expire certificates
-- ✅ **Weak Crypto Detection**: Flag MD5, SHA-1, weak key sizes
-- ✅ **SAN Validation**: Verify Subject Alternative Names
-- ✅ **Multiple Output Formats**: JSON, table, detailed text
+- ✅ **TLS Certificate Fetching**: Connect to hosts and retrieve full certificate chains using rustls
+- ✅ **X.509 Parsing**: Complete ASN.1 and X.509 structure parsing with field extraction
+- ✅ **Chain Validation**: Build and validate certificate chains against trust anchors
+- ✅ **Expiry Detection**: Identify expired, not-yet-valid, or soon-to-expire certificates
+- ✅ **Weak Crypto Detection**: Detect MD5, SHA-1 signatures, and weak RSA keys (<2048 bits)
+- ✅ **SAN Validation**: Verify Subject Alternative Names and detect CN-only certificates
+- ✅ **Multiple Output Formats**: JSON (machine-readable), table, and detailed text reports
+- ✅ **Bulk Scanning**: Parallel scanning from host lists with configurable concurrency
+- ✅ **Security Auditing**: Strict mode for CI/CD pipelines with exit codes
+- ✅ **Certificate Export**: Export certificate chains in PEM format
 
 ### Advanced Features (Roadmap)
 
@@ -50,15 +53,15 @@ This project is designed to demonstrate:
 - 🔲 **CRL Checking**: Certificate Revocation List verification
 - 🔲 **CT Log Integration**: Certificate Transparency log monitoring
 - 🔲 **TLS Configuration Analysis**: Cipher suite and protocol version auditing
-- 🔲 **Bulk Scanning**: Parallel scanning from host lists
 - 🔲 **Certificate Pinning**: Validate against expected certificates
+- 🔲 **Custom Trust Stores**: Support for private CA certificates
 
 ## 🚀 Installation
 
 ### Prerequisites
 
-- Rust 1.75 or later
-- OpenSSL development headers (for some dependencies)
+- Rust 1.75 or later (2021 edition)
+- No external dependencies required (pure Rust implementation)
 
 ### Build from Source
 
@@ -69,6 +72,13 @@ cargo build --release
 ```
 
 The binary will be available at `target/release/tls-cert-analyzer`.
+
+### Quick Test
+
+```bash
+# Test the installation
+./target/release/tls-cert-analyzer analyze google.com:443 --format text
+```
 
 ## 📖 Usage
 
@@ -90,12 +100,23 @@ tls-cert-analyzer analyze google.com:443 --output report.json
 
 ### Bulk Scanning
 
+Create a `hosts.txt` file with one host per line:
+```
+google.com:443
+github.com:443
+example.com:443
+```
+
+Then scan:
 ```bash
 # Scan multiple hosts from file
 tls-cert-analyzer scan --hosts hosts.txt --format table
 
-# Parallel scanning with custom concurrency
-tls-cert-analyzer scan --hosts hosts.txt --concurrency 10
+# Parallel scanning with custom concurrency (default: 10)
+tls-cert-analyzer scan --hosts hosts.txt --concurrency 20
+
+# Save results to file
+tls-cert-analyzer scan --hosts hosts.txt --output results.json --format json
 ```
 
 ### Security Auditing
@@ -226,21 +247,25 @@ The tool is optimized for:
 
 ## 🛣️ Roadmap
 
-### Phase 1: Core Functionality (Current)
+### Phase 1: Core Functionality ✅ COMPLETED
 
-- [x] Basic certificate fetching
-- [x] X.509 parsing
-- [x] Expiry checking
-- [x] Weak crypto detection
-- [ ] Chain validation
-- [ ] Multiple output formats
+- [x] TLS certificate fetching with tokio-rustls
+- [x] Complete X.509 parsing with x509-parser
+- [x] Expiry checking (expired, not-yet-valid, near-expiry)
+- [x] Weak crypto detection (MD5, SHA-1, weak RSA)
+- [x] Chain validation (issuer-subject matching, CA verification)
+- [x] Multiple output formats (JSON, table, text)
+- [x] CLI commands (analyze, scan, audit, export)
+- [x] Bulk scanning with parallel execution
+- [x] Security audit mode with strict checking
+- [x] PEM certificate export
 
-### Phase 2: Advanced Analysis
+### Phase 2: Advanced Analysis (In Progress)
 
 - [ ] OCSP validation
 - [ ] CRL checking
 - [ ] TLS version/cipher analysis
-- [ ] Bulk scanning with concurrency
+- [ ] Custom trust store support
 
 ### Phase 3: Integration & Research
 

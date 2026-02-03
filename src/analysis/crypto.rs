@@ -5,6 +5,7 @@ use crate::cert::ParsedCertificate;
 use crate::error::Result;
 
 /// Analyzer for cryptographic strength issues
+#[derive(Clone)]
 pub struct CryptoAnalyzer;
 
 impl CryptoAnalyzer {

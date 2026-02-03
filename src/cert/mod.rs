@@ -3,7 +3,7 @@
 //! This module handles certificate fetching and parsing operations.
 
 mod fetcher;
-mod parser;
+pub mod parser;
 mod validator;
 
 pub use fetcher::CertificateFetcher;

@@ -54,6 +54,7 @@ use rustls::RootCertStore;
 ///     Ok(())
 /// }
 /// ```
+#[derive(Clone)]
 pub struct CertificateFetcher {
     /// Connection timeout
     timeout: Duration,
@@ -119,7 +120,7 @@ impl CertificateFetcher {
     pub async fn fetch(&self, host: &str, port: u16) -> Result<Vec<Vec<u8>>> {
         // Validate input
         self.validate_hostname(host)?;
-        
+
         // Build server address
         let addr = format!("{host}:{port}");
 
@@ -139,21 +140,43 @@ impl CertificateFetcher {
                 }
             })?;
 
-        // TODO: Complete TLS handshake and extract certificates
-        // For now, return placeholder
-        // This will be implemented in the next phase with actual rustls integration
-        
-        tracing::info!("Connected to {addr}, extracting certificates...");
-        
-        // Placeholder: In real implementation, we'll:
-        // 1. Create ServerName from host
-        // 2. Create TlsConnector with our config
-        // 3. Perform handshake
-        // 4. Extract peer certificates from handshake
-        
-        Err(CertAnalyzerError::TlsHandshake(
-            "TLS handshake not yet implemented - coming in next phase".to_string()
-        ))
+        tracing::info!("Connected to {addr}, starting TLS handshake...");
+
+        // Create ServerName for SNI
+        let server_name = rustls::pki_types::ServerName::try_from(host)
+            .map_err(|_| CertAnalyzerError::InvalidInput(
+                format!("Invalid server name: {host}")
+            ))?
+            .to_owned();
+
+        // Create TLS connector with tokio-rustls
+        use tokio_rustls::TlsConnector;
+        let connector = TlsConnector::from(self.config.clone());
+
+        // Perform TLS handshake
+        let tls_stream = connector.connect(server_name, tcp_stream)
+            .await
+            .map_err(|e| CertAnalyzerError::TlsHandshake(e.to_string()))?;
+
+        // Extract certificates from the connection
+        let (_, client_conn) = tls_stream.get_ref();
+        let peer_certs = client_conn
+            .peer_certificates()
+            .ok_or(CertAnalyzerError::NoCertificates)?;
+
+        if peer_certs.is_empty() {
+            return Err(CertAnalyzerError::NoCertificates);
+        }
+
+        // Convert certificates to Vec<Vec<u8>>
+        let certs: Vec<Vec<u8>> = peer_certs
+            .iter()
+            .map(|cert| cert.as_ref().to_vec())
+            .collect();
+
+        tracing::info!("Successfully retrieved {} certificates from {addr}", certs.len());
+
+        Ok(certs)
     }
 
     /// Validate hostname for security and correctness

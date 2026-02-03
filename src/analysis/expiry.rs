@@ -5,6 +5,7 @@ use crate::cert::ParsedCertificate;
 use crate::error::Result;
 
 /// Analyzer for certificate expiry issues
+#[derive(Clone)]
 pub struct ExpiryAnalyzer {
     /// Warning threshold in days
     warning_threshold_days: i64,
